@@ -7,7 +7,7 @@ import ImagemBanner from "assets/banner.png";
 import Galeria from "./componentes/Galeria";
 
 import fotos from "./fotos.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalZoom from "./componentes/ModalZoom";
 
 const FundoGradiente = styled.div`
@@ -41,16 +41,48 @@ const ConteudoGaleria = styled.section`
 const App = () => {
 	const [fotosDaGaleria, setFotosDaGaleria] = useState(fotos);
 	const [fotoSelecionada, setFotoSelecionada] = useState(null);
+	const [filtro, setFiltro] = useState("");
+	const [tag, setTag] = useState(0);
+
+	useEffect(() => {
+		const fotosFiltradas = fotos.filter((foto) => {
+			const filtroPorTag = !tag || foto.tagId === tag;
+			const filtroPorTitulo =
+				!filtro || foto.titulo.toLowerCase().includes(filtro.toLowerCase());
+			return filtroPorTag && filtroPorTitulo;
+		});
+		setFotosDaGaleria(fotosFiltradas);
+	}, [filtro, tag]);
 
 	const aoFechar = () => {
 		setFotoSelecionada(null);
+	};
+
+	const aoAlternarFavorito = (foto) => {
+		if (foto.id === fotoSelecionada?.id) {
+			setFotoSelecionada({
+				...fotoSelecionada,
+				favorita: !fotoSelecionada.favorita,
+			});
+		}
+		setFotosDaGaleria(
+			fotosDaGaleria.map((fotoDaGaleria) => {
+				return {
+					...fotoDaGaleria,
+					favorita:
+						foto.id === fotoDaGaleria.id
+							? !fotoDaGaleria.favorita
+							: fotoDaGaleria.favorita,
+				};
+			})
+		);
 	};
 
 	return (
 		<FundoGradiente>
 			<EstilosGrobais />
 			<AppContainer>
-				<Cabelho />
+				<Cabelho filtro={filtro} setFiltro={setFiltro} />
 				<MainContainer>
 					<BarraLateral />
 					<ConteudoGaleria>
@@ -61,11 +93,18 @@ const App = () => {
 						<Galeria
 							aoFotoSelecionada={(foto) => setFotoSelecionada(foto)}
 							fotos={fotosDaGaleria}
+							aoAlternarFavorito={aoAlternarFavorito}
+							tag={tag}
+							setTag={setTag}
 						/>
 					</ConteudoGaleria>
 				</MainContainer>
 			</AppContainer>
-			<ModalZoom foto={fotoSelecionada} aoFechar={aoFechar} />
+			<ModalZoom
+				foto={fotoSelecionada}
+				aoFechar={aoFechar}
+				aoAlternarFavorito={aoAlternarFavorito}
+			/>
 		</FundoGradiente>
 	);
 };

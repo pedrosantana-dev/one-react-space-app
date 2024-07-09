@@ -23,17 +23,27 @@ const ContainerFotos = styled.ul`
 	}
 `;
 
-const Galeria = ({ fotos = [], aoFotoSelecionada }) => {
+const Galeria = ({
+	fotos = [],
+	aoFotoSelecionada,
+	aoAlternarFavorito,
+	tag,
+	setTag,
+}) => {
 	return (
 		<>
-			<Tags />
+			<Tags tag={tag} setTag={setTag} />
 			<GaleriaContainer>
 				<SecaoFluida>
 					<Titulo>Nevegue pela galeria</Titulo>
 					<ContainerFotos>
 						{fotos.map((foto) => (
 							<li key={foto.id}>
-								<Imagem aoZoomSolicitado={aoFotoSelecionada} foto={foto} />
+								<Imagem
+									aoZoomSolicitado={aoFotoSelecionada}
+									foto={foto}
+									aoAlternarFavorito={aoAlternarFavorito}
+								/>
 							</li>
 						))}
 					</ContainerFotos>

@@ -31,12 +31,14 @@ const TagEstilizada = styled.button`
 	}
 `;
 
-const Tags = () => {
+const Tags = ({ tag, setTag }) => {
 	return (
 		<TagContainerPrincipalEstilizado>
 			<TagTituloEstilizada>Busque por tags:</TagTituloEstilizada>
 			{tags.map((tag) => (
-				<TagEstilizada key={tag.id}>{tag.titulo}</TagEstilizada>
+				<TagEstilizada onClick={() => setTag(tag.id)} key={tag.id}>
+					{tag.titulo}
+				</TagEstilizada>
 			))}
 		</TagContainerPrincipalEstilizado>
 	);

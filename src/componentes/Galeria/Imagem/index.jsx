@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import favorite from "./favorite.png";
 import favoriteOutline from "./favorite_outline.png";
 import openInFull from "./open_in_full.png";
 
@@ -41,6 +42,11 @@ const ImagemEstilizada = styled.figure`
 				color: #fff;
 				font-size: 16px;
 				cursor: pointer;
+
+				img {
+					width: 24px;
+					height: 24px;
+				}
 			}
 
 			button:nth-of-type(2) {
@@ -50,7 +56,14 @@ const ImagemEstilizada = styled.figure`
 	}
 `;
 
-const Imagem = ({ foto, aoZoomSolicitado, expandida = false }) => {
+const Imagem = ({
+	foto,
+	aoZoomSolicitado,
+	expandida = false,
+	aoAlternarFavorito,
+}) => {
+	const iconeFavorito = foto.favorita ? favorite : favoriteOutline;
+
 	return (
 		<ImagemEstilizada $expandida={expandida}>
 			<img src={foto.path} alt={foto.titulo} />
@@ -58,8 +71,8 @@ const Imagem = ({ foto, aoZoomSolicitado, expandida = false }) => {
 				<h3>{foto.titulo}</h3>
 				<footer>
 					<h4>{foto.fonte}</h4>
-					<button>
-						<img src={favoriteOutline} alt="" />
+					<button onClick={() => aoAlternarFavorito(foto)}>
+						<img src={iconeFavorito} alt="" />
 					</button>
 					<button onClick={() => aoZoomSolicitado(foto)}>
 						<img src={openInFull} alt="" />
