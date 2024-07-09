@@ -9,6 +9,7 @@ import Galeria from "./componentes/Galeria";
 import fotos from "./fotos.json";
 import { useEffect, useState } from "react";
 import ModalZoom from "./componentes/ModalZoom";
+import Rodape from "./componentes/Rodape";
 
 const FundoGradiente = styled.div`
 	background: linear-gradient(
@@ -99,6 +100,7 @@ const App = () => {
 						/>
 					</ConteudoGaleria>
 				</MainContainer>
+				<Rodape />
 			</AppContainer>
 			<ModalZoom
 				foto={fotoSelecionada}
